@@ -28,6 +28,7 @@ class UserController extends Controller
 
         return view('layouts.dataTable.index', [
             'html' => $user->html(),
+            'breadcrumb' => 'Пользователи',
             'url_create' => route('users.create'),
         ]);
     }
@@ -77,7 +78,7 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $user->update($request->input());
-        return redirect(route('users.show'));
+        return redirect(route('users.index'));
     }
 
     /**
