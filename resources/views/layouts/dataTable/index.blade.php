@@ -13,17 +13,24 @@
                 {{ session('alert') }}
             </div>
         @endif
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="{{ route('dashboard') }}">Dashboard</a>
+                </li>
+                <li class=" breadcrumb-item active" aria-current="page">
+                    {{ $breadcrumb }}
+                </li>
+            </ol>
+        </nav>
         <br>
-
-        <div class="box box-primary">
-            <div class="box-header with-border">
-                <div class="btn-group">
-                    <a href="{{ $url_create }}" type="button" class="btn btn-primary">
-                        <i class="fa fa-plus"></i> Добавить
-                    </a>
-                </div>
+        <div class="card">
+            <div class="card-header">
+                <a href="{{ $url_create }}" type="button" class="btn btn-primary float-right">
+                    <i class="fa fa-plus"></i> Добавить
+                </a>
             </div>
-            <div class="box-body">
+            <div class="card-body">
                 @include("layouts.dataTable.table")
             </div>
         </div>
