@@ -29,6 +29,24 @@
                             {!! Form::text('email', null, ['class'=>'form-control input-lg']) !!}
                         </div>
                     </div>
+                    <div class="col-xs-12 col-sm-12 col-md-3">
+                        <div class="form-group-lg">
+                            <label>Компании пользователя</label>
+                            @foreach(\App\Models\mongo\Company::all()->sortBy('name') as $company)
+                                <input type="hidden" name="company_ids">
+                                <div class="form-check">
+                                    {{ Form::checkbox('company_ids[]', $company->_id, null, [
+                                            "class"=> "form-check-input",
+                                            'type'=>"checkbox",
+                                            "id"=> $company->_id,
+                                        ]) }}
+                                    <label class="form-check-label" for="{{ $company->_id }}">
+                                        {{ $company->name }} <a href="{{ route('companies.edit', $company->_id) }}">*</a>
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
                 </div>
             </div>
             @include('layouts.ui.buttons-return-save', ['route' => route('users.index')])
