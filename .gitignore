@@ -13,3 +13,5 @@ yarn-error.log
 /database/migrations/
 /.idea/
 /public/
+/.idea/
+/database/migrations/

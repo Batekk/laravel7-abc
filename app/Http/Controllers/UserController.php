@@ -2,58 +2,102 @@
 
 namespace App\Http\Controllers;
 
-use App\Helper\Helper;
 use App\User;
+use Exception;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\{Hash};
+use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class UserController extends Controller
 {
-    public function show()
+    /**
+     * Display a listing of the resource.
+     *
+     * @param User $user
+     * @return Factory|JsonResponse|View
+     */
+    public function index(User $user)
     {
-        $users = User::all();
-        return view('users.show', compact('users'));
-    }
+        if (request()->ajax()) {
+            return $user::dataTable()->toJson();
+        }
 
-    public function userCreate()
-    {
-        $user = [];
-        return view('users.createEdit', compact('user'));
-    }
-
-    public function userStore(Request $request)
-    {
-        $password = Helper::generateRandomString(12);
-
-        $user = new User([
-            'name' => $request->get('name'),
-            'email' => $request->get('email'),
-            'password' => Hash::make($password)
+        return view('layouts.dataTable.index', [
+            'html' => $user->html(),
+            'url_create' => route('users.create'),
         ]);
-
-        $user->save();
-        return redirect(route('users.show'))->with('password', $password);
     }
 
-    public function userEdit($id)
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @param User $user
+     * @return Factory|View
+     */
+    public function create(User $user)
     {
-        $user = User::where('_id', $id)->firstOrFail();
-        return view('users.createEdit', compact('user'));
+        return view('users.form', compact('user'));
     }
 
-    public function userUpdate(Request $request, $id)
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param Request $request
+     * @param User $user
+     * @return RedirectResponse|Redirector
+     */
+    public function store(Request $request, User $user)
     {
-        $user = User::where('_id', $id)->firstOrFail();
-        $user->update($request->all());
+        $user->create($request->input());
+        return redirect(route('users.index'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param User $user
+     * @return Factory|View
+     */
+    public function edit(User $user)
+    {
+        return view('users.form', compact('user'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param Request $request
+     * @param User $user
+     * @return RedirectResponse|Redirector
+     */
+    public function update(Request $request, User $user)
+    {
+        $user->update($request->input());
         return redirect(route('users.show'));
     }
 
-    public function userDestroy($id)
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param User $user
+     * @return RedirectResponse
+     * @throws Exception
+     */
+    public function destroy(User $user)
     {
-        $user = User::findOrFail($id);
         $user->delete();
-
         return redirect()->route('users.show')
             ->with('password', 'Удален');
+    }
+
+    /* Авторизация под пользователем */
+    public function login(User $user)
+    {
+        Auth::login($user);
+        return redirect(route('dashboard'))->with('success', 'Выполнен вход под пользователем');
     }
 }
