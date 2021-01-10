@@ -26,5 +26,4 @@ class MongoModel extends Eloquent
         $model->save();
         return $model;
     }
-
 }
