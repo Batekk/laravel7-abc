@@ -49,12 +49,12 @@ class CompanyController extends Controller
      * @param Company $company
      * @return RedirectResponse|Redirector
      */
-    public function store(Request $request, Company $company)
+    public function store(Request $request)
     {
         $user = auth()->user();
         $user->companies()->create($request->input());
 
-        return redirect(route('company.index'));
+        return redirect(route('company.index'))->with('success', 'Успех');
     }
 
     /**
@@ -78,7 +78,7 @@ class CompanyController extends Controller
     public function update(Request $request, Company $company)
     {
         $company->update($request->input());
-        return redirect(route('companies.index'));
+        return redirect(route('companies.index'))->with('success', 'Обновлен');
     }
 
     /**
