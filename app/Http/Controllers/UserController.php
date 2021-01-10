@@ -51,10 +51,10 @@ class UserController extends Controller
      * @param User $user
      * @return RedirectResponse|Redirector
      */
-    public function store(Request $request, User $user)
+    public function store(Request $request)
     {
-        $user->create($request->input());
-        return redirect(route('users.index'));
+        User::create($request->input());
+        return redirect(route('users.index'))->with('success', 'Успех');
     }
 
     /**
@@ -78,7 +78,7 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $user->update($request->input());
-        return redirect(route('users.index'));
+        return redirect(route('users.index'))->with('success', 'Обновлен');
     }
 
     /**
@@ -91,8 +91,8 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect()->route('users.show')
-            ->with('password', 'Удален');
+        return redirect()->route('users.index')
+            ->with('alert', 'Удален');
     }
 
     /* Авторизация под пользователем */
