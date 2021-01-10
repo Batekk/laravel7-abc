@@ -4,7 +4,7 @@
     <div class="container">
         @include("layouts.form-errors")
         @if (session('success'))
-            <div class="alert alert-primary center-block text-center" role="alert">
+            <div class="alert alert-success center-block text-center" role="alert">
                 {{ session('success') }}
             </div>
         @endif
