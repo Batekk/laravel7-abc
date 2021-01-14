@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ServiceRequest;
 use App\Models\mongo\Service;
 use Exception;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 
@@ -46,10 +46,10 @@ class ServiceController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param ServiceRequest $request
      * @return RedirectResponse|Redirector
      */
-    public function store(Request $request)
+    public function store(ServiceRequest $request)
     {
         Service::createFromRequest($request);
         return redirect(route('services.index'))->with('success', 'Успех');
@@ -69,11 +69,11 @@ class ServiceController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param ServiceRequest $request
      * @param Service $service
      * @return RedirectResponse|Redirector
      */
-    public function update(Request $request, Service $service)
+    public function update(ServiceRequest $request, Service $service)
     {
         $service->update($request->input());
         return redirect(route('services.index'))->with('success', 'Обновлено');
