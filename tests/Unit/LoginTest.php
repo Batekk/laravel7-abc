@@ -101,7 +101,7 @@ class LoginTest extends TestCase
         $password = 'lypa-i-pypa';
 
         $user = factory(User::class)->create([
-            'password' => $password,
+            'password' => \Hash::make($password),
         ]);
 
         \Session::start();
