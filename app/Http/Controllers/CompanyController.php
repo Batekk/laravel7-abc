@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CompanyRequest;
 use App\Models\mongo\Company;
+use Exception;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 
@@ -45,11 +46,10 @@ class CompanyController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
-     * @param Company $company
+     * @param CompanyRequest $request
      * @return RedirectResponse|Redirector
      */
-    public function store(Request $request)
+    public function store(CompanyRequest $request)
     {
         $user = auth()->user();
         $user->companies()->create($request->input());
@@ -71,11 +71,11 @@ class CompanyController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param CompanyRequest $request
      * @param Company $company
      * @return RedirectResponse|Redirector
      */
-    public function update(Request $request, Company $company)
+    public function update(CompanyRequest $request, Company $company)
     {
         $company->update($request->input());
         return redirect(route('companies.index'))->with('success', 'Обновлен');
@@ -86,7 +86,7 @@ class CompanyController extends Controller
      *
      * @param Company $company
      * @return RedirectResponse
-     * @throws \Exception
+     * @throws Exception
      */
     public function destroy(Company $company)
     {
