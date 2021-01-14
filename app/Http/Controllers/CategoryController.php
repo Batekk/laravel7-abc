@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CategoryRequest;
 use App\Models\mongo\Category;
 use Exception;
 use Illuminate\Contracts\View\Factory;
@@ -46,11 +47,10 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
-     * @param Category $category
+     * @param CategoryRequest $request
      * @return RedirectResponse|Redirector
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
         Category::createFromRequest($request);
         return redirect(route('category.index'))->with('success', 'Успех');
@@ -70,11 +70,11 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param CategoryRequest $request
      * @param Category $category
      * @return RedirectResponse|Redirector
      */
-    public function update(Request $request, Category $category)
+    public function update(CategoryRequest $request, Category $category)
     {
         $category->update($request->input());
         return redirect(route('category.index'))->with('success', 'Обновлено');
