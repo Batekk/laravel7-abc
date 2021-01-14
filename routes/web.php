@@ -16,4 +16,5 @@ Route::resources([
 
 Route::post('users/{user}/login', ['as' => 'users.login', 'uses' => 'UserController@login']);
 
+Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 Auth::routes();
